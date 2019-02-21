@@ -1,0 +1,35 @@
+from math import *
+# Auto-generated code below aims at helping you parse
+# the standard input according to the problem statement.
+
+speed = int(input())
+light_count = int(input())
+MaxSpeed = speed / 3.6
+Dist = []
+Dura = []
+point = []
+
+for i in range(light_count):
+    distance, duration = [int(j) for j in input().split()]
+    Dist.append(distance)
+    Dura.append(duration)
+    point.append(0)
+
+while True:    
+    for i in range(light_count):
+        point[i] = 0
+        cicle = int(((Dist[i] / MaxSpeed) + 1) / Dura[i])
+        if (cicle % 2) != 0:
+            MaxSpeed = int(Dist[i]) / (int(Dura[i])*(cicle+1))
+            point[i] = 0
+        else:
+            point[i] = 1
+
+    Break = 0
+    for i in range(light_count):
+        Break += int(point[i])
+
+    if (Break) >= light_count:
+        break
+   
+print(int(MaxSpeed*3.6))
