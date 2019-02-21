@@ -1,0 +1,69 @@
+import sys
+import math
+
+# n: the total number of nodes in the level, including the gateways
+# l: the number of links
+# e: the number of exit gateways
+n, l, e = [int(i) for i in input().split()]
+_ei = [] #list of gateways
+_links = []
+answer = ''
+
+for i in range(l):
+    # n1: N1 and N2 defines a link between these nodes
+    n1, n2 = [int(j) for j in input().split()]
+    _links.append(n1)
+    _links.append(n2)
+        
+for i in range(e):
+    _ei.append(int(input()))  # the index of a gateway node
+
+def isgateway(_j):
+    for _r in _ei:
+        if (_j & 1) == 0:
+            if _links[_j + 1] == _r:
+                return True
+        else:
+            if _links[_j - 1] == _r:
+                return True
+    return False
+    
+turn = 0        
+while True:
+    turn += 1
+    si = int(input()) 
+    for j in range(len(_links) - 1):
+        if si == int(_links[j]):            
+            gate = isgateway(j)
+            if gate == True:
+                if (j & 1) == 0:
+                    answer = str(_links[j]) + ' ' + str(_links[j + 1])
+                    del _links[j]
+                    del _links[j]
+                    break
+                else:
+                    answer = str(_links[j]) + ' ' + str(_links[j - 1])
+                    del _links[j]
+                    del _links[j - 1]
+                    break
+                    
+    if len(answer) == 0:
+        for si in _links:
+            ind = _links.index(si)
+            if (ind & 1) == 0:
+                answer = str(_links[ind]) + ' ' + str(_links[ind + 1])
+                del _links[ind]
+                del _links[ind]
+            else:
+                answer = str(_links[ind]) + ' ' + str(_links[ind - 1])
+                del _links[ind]
+                del _links[ind - 1]
+            break
+    
+    print(answer)
+    
+    answer = ''
+'''        
+    # Example: 0 1 are the indices of the nodes you wish to sever the link between
+    print(_links, si, i, _ei)
+'''
