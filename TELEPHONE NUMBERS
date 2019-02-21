@@ -1,0 +1,62 @@
+import sys
+import math
+
+n = int(input())
+telephone = [(input()) for _ in range(n)]
+idee = dict()
+number = 0
+
+class node:
+    
+    def __init__(self, root, name, value, parent, child):
+        self.root = root
+        self.name = name
+        self.value = value
+        self.parent = parent
+        self.child = []
+  
+    def add(self, _root, _parent, _value):
+        global number
+        number += 1       
+        idee[number] = node(_root, number, _value, _parent, 0)
+        if not _root:
+            idee[_parent].child.append(number)
+        return idee[number].name
+        
+def searchroot(_i):
+    for k in range(number - 1):
+        if (str(_i) in str(idee[k + 1].value)) and idee[k + 1].root == True:
+            return idee[k + 1].name
+    return False 
+
+def ischild(parente, _v):
+    for b in idee[parente].child:
+        if str(_v) == str(idee[b].value):
+            return idee[b].name
+    return False
+        
+def insert(phone):
+    for i in range(len(phone)):   
+        if i == 0:    
+            isroot = searchroot(phone[i])
+            if not isroot:
+                isroot = node.add(True, not(isroot), 0, phone[i])            
+        elif i == 1:
+            havechild = ischild(isroot, phone[i])
+            if not havechild:
+                parente = node.add(True, False, isroot, phone[i])            
+            else:
+                parente = havechild
+        else:
+            havechild = ischild(parente, phone[i])
+            if not havechild:
+                parente = node.add(True, False, parente, phone[i])    
+            else:
+                parente = havechild
+            
+
+for l in range(len(telephone)):
+    phone = list(str(telephone[l]))
+    insert(phone)
+    
+print(number)
