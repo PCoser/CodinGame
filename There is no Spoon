@@ -1,0 +1,63 @@
+import sys
+import math
+
+# Don't let the machines win. You are humanity's last hope...
+
+width = int(input())  # the number of cells on the X axis
+height = int(input())  # the number of cells on the Y axis
+node = []
+
+def noding(_line, _i):
+    _node = []
+    linelist = list(_line)
+    j = 0
+    for k in linelist:
+        if k == '0':
+            _node.append(str(j) + ' ' + str(_i))
+        else:
+            _node.append('-1,-1')
+        j += 1
+    return _node
+    
+for i in range(height):
+    line = input()  # width characters, each either 0 or .
+    temp = noding(line, i)
+    node.append(temp)
+
+answer = ''
+
+for i in range(len(node)):
+    for j in range(len(node[i])):
+        if node[i][j] != '-1,-1':
+            answer = str(node[i][j])         
+        
+            for k in range(j, len(node[i])):
+                if node[i][k] != '-1,-1' and node[i][k] != node[i][j]:
+                    answer = answer + ' ' + str(node[i][k])
+                    break
+            if (len(answer) < 7):
+                answer = answer + ' -1 -1'
+                                
+            for l in range(i, len(node)):
+                if node[l][j] != '-1,-1' and node[l][j] != node[i][j]:
+                    answer = answer + ' ' + str(node[l][j])
+                    break
+            
+            if (len(answer) < 10):
+                answer = answer + ' -1 -1'    
+            
+            print(answer)
+
+''' 
+            if len(answer) < 3:
+                answer = answer + ' -1,-1'
+            
+            for l in range(len(node) - 1):
+                if node[l][1] != '-1,-1':
+                    answer = answer + ' ' + str(node[1][l])
+'''
+            
+#print(node)
+#print(answer)
+    
+# Three coordinates: a node, its right neighbor, its bottom neighbor
